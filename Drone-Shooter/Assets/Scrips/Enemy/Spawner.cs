@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] int timer = 3;
+    [SerializeField] int timer;
     public List<GameObject> enemies;
     private float counter = 0;
 
