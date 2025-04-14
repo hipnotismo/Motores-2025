@@ -6,9 +6,6 @@ using UnityEngine.Tilemaps;
 public class BasicGun : MonoBehaviour
 {
     public Transform BulletSpawnPoint;
-
-    
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -23,10 +20,9 @@ public class BasicGun : MonoBehaviour
         Vector3 spawnDirection = BulletSpawnPoint.transform.forward;
 
         Physics.Raycast(spawnPosition, spawnDirection, out hit, 100f);
-            Debug.Log(hit.transform.name);
+            Debug.Log(hit.collider.name/*transform.name*/);
 
             ITakeDamage isHit = hit.collider.GetComponent<ITakeDamage>();
-
 
             if (isHit != null)
             {
