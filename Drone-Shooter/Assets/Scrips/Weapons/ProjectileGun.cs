@@ -7,8 +7,6 @@ public class ProjectileGun : MonoBehaviour
     public Transform bulletSpawnPoint;
     void Update()
     {
-        Debug.Log(Quaternion.identity);
-
         if (Input.GetMouseButtonDown(0))
             Shoot();
     }
