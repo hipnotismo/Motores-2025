@@ -5,7 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] int timer;
-    public List<GameObject> enemies;
+    public List<GameObject> spawnPoints;
+    public List<string> tags;
     private float counter = 0;
 
     // Update is called once per frame
@@ -15,13 +16,18 @@ public class Spawner : MonoBehaviour
 
         if (counter >= timer)
         {
-            Debug.Log("start spwn");
-            int a = UnityEngine.Random.Range(0, enemies.Count);
-            Instantiate(enemies[a], transform.position, transform.rotation);
+            Spawn();
+            //Instantiate(enemies[a], transform.position, transform.rotation);
             counter = 0f;
 
         }
     }
 
-   
+   private void Spawn()
+    {
+        Debug.Log("start spwn");
+        int randomTag = UnityEngine.Random.Range(0, tags.Count);
+        int randomPos = UnityEngine.Random.Range(0, spawnPoints.Count);
+        PoolManager.instance.SpawnFromPool(tags[randomTag], transform.position, Quaternion.identity);
+    }
 }

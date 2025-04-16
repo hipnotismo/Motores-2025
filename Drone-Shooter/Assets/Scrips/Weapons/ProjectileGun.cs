@@ -7,18 +7,15 @@ public class ProjectileGun : MonoBehaviour
     public Transform bulletSpawnPoint;
     void Update()
     {
+        Debug.Log(Quaternion.identity);
+
         if (Input.GetMouseButtonDown(0))
             Shoot();
     }
 
     public void Shoot()
-    {
-        GameObject bullet = ProjectilePooling.instace.GetPooledObjects();
-        if (bullet != null)
-        {
-            bullet.transform.position = bulletSpawnPoint.position;
-            bullet.SetActive(true);
-        }
+    {      
 
+        PoolManager.instance.SpawnFromPool("Bullets",transform.position,Quaternion.identity);
     }
 }
