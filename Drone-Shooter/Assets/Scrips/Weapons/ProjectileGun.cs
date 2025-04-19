@@ -14,6 +14,6 @@ public class ProjectileGun : MonoBehaviour
     public void Shoot()
     {      
 
-        PoolManager.instance.SpawnFromPool("Bullets",transform.position,Quaternion.identity);
+        PoolManager.instance.SpawnFromPool("Bullets",transform.position, transform.rotation);
     }
 }

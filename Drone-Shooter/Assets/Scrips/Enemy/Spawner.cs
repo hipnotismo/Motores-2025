@@ -28,6 +28,6 @@ public class Spawner : MonoBehaviour
         Debug.Log("start spwn");
         int randomTag = UnityEngine.Random.Range(0, tags.Count);
         int randomPos = UnityEngine.Random.Range(0, spawnPoints.Count);
-        PoolManager.instance.SpawnFromPool(tags[randomTag], transform.position, Quaternion.identity);
+        PoolManager.instance.SpawnFromPool(tags[randomTag], spawnPoints[randomPos].transform.position, Quaternion.identity);
     }
 }

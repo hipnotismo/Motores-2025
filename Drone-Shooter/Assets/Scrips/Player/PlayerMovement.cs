@@ -5,6 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody rigidbody;
+    private Vector3 _moveDirection;
+
+    [SerializeField] private float horizontalAcceleration;
+    [SerializeField] private float verticalForce;
+    [SerializeField] private float maxSpeed;
+
+
     [SerializeField] private float speed = 10;
 
     [SerializeField] private float jumpForce;
@@ -25,50 +32,61 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate() 
     {
         Movement();
-        if (Input.GetKeyDown(KeyCode.Space)/* && IsGrounded()*/)
-            Jump();
+        VerticalMovement();
 
-        if (Input.GetKeyDown(KeyCode.C))
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-        if (Input.GetKeyUp(KeyCode.C))
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
 
     }
 
-    bool IsGrounded()
-    {
-        return Physics.Raycast(transform.position, Vector3.down, groundDistance);
-    }
 
     private void Movement()
     {
-        float z = Input.GetAxis("Vertical");     
-        float x = Input.GetAxis("Horizontal");  
-        float y = 0;
+        //float z = Input.GetAxis("Vertical");     
+        //float x = Input.GetAxis("Horizontal");  
+        //float y = 0;
 
-        if (Mathf.Abs(z) < 0.01f && Mathf.Abs(x) < 0.01f)
-            return;
+        //if (Mathf.Abs(z) < 0.01f && Mathf.Abs(x) < 0.01f)
+        //    return;
 
-        Vector3 forward = transform.forward;
-        Vector3 right = transform.right;
+        //Vector3 forward = transform.forward;
+        //Vector3 right = transform.right;
 
-        forward.y = 0;
-        right.y = 0;
+        //forward.y = 0;
+        //right.y = 0;
 
-        forward.Normalize();
-        right.Normalize();
+        //forward.Normalize();
+        //right.Normalize();
 
-        Vector3 direction = (forward * z + right * x).normalized;
-        //Debug.Log("VectorForward: " + forward + "\nVectorRight: " + right + "\nDirection: " + direction);
-        rigidbody.AddForce(direction * speed, ForceMode.Acceleration);
+        //Vector3 direction = (forward * z + right * x).normalized;
+        //rigidbody.AddForce(direction * speed, ForceMode.Acceleration);
+
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+
+        _moveDirection = (transform.right * moveHorizontal + transform.forward * moveVertical).normalized;
+
+        Vector3 horizontalVelocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
+
+        horizontalVelocity += _moveDirection * (horizontalAcceleration * Time.fixedDeltaTime);
+
+        if (horizontalVelocity.magnitude >= maxSpeed)
+        {
+            horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+        }
+
+        rigidbody.velocity = new Vector3(horizontalVelocity.x, rigidbody.velocity.y, horizontalVelocity.z);
     }
 
-    void Jump()
+    private void VerticalMovement()
     {
-        
-            Debug.Log("we are jumping");
-            rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        
+        if (Input.GetKey(KeyCode.Space))
+        {
+            rigidbody.AddForce(Vector3.up * verticalForce, ForceMode.Impulse);
+        }
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            rigidbody.AddForce(Vector3.up * -verticalForce, ForceMode.Impulse);
+        }
+
     }
 
 }
