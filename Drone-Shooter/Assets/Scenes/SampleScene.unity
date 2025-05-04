@@ -7818,11 +7818,6 @@ MonoBehaviour:
   horizontalAcceleration: 5
   verticalForce: 0.1
   maxSpeed: 100
-  speed: 10
-  jumpForce: 5
-  groundDistance: 0.5
-  crouchYScale: 0.25
-  startYScale: 0
 --- !u!114 &1937040859
 MonoBehaviour:
   m_ObjectHideFlags: 0
