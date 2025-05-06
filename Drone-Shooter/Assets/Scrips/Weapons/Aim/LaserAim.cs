@@ -18,12 +18,18 @@ public class LaserAim : MonoBehaviour
         {
             if (hit.collider)
             {
-                lr.SetPosition(1, new Vector3(0,0,-hit.distance));
+                //lr.SetPosition(0, new Vector3(transform.position.x, transform.position.y, 50));
+                //lr.SetPosition(1, new Vector3(transform.position.x,transform.position.y,hit.distance));
+                lr.SetPosition(0, transform.position);
+                lr.SetPosition(1, transform.position + (transform.forward * 3));
             }
         }
         else
         {
-            lr.SetPosition(0, new Vector3(0,0,100));
+            //lr.SetPosition(0, new Vector3(transform.position.x, transform.position.y, 50));
+            //lr.SetPosition(1, new Vector3(transform.position.x, transform.position.y, hit.distance));
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, transform.position + (transform.forward * 3));
         }
     }
 }
