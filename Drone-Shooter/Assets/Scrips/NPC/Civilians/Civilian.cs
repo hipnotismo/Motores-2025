@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using static Zombie;
 
-public class Civilian : NPCBase
+public class Civilian : NPCBase, ITakeDamage
 {
     public enum CivilianState
     {
@@ -82,5 +82,19 @@ public class Civilian : NPCBase
             currentState = CivilianState.Iddle;
 
         }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy" | collision.gameObject.tag == "Bullet")
+        {
+            TakeDamage();
+
+        }
+    }
+
+    public void TakeDamage()
+    {
+        ScoreManager.instance.IncreaseLost();
+        Destroy(this.gameObject);
     }
 }
