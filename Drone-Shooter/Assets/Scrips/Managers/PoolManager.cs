@@ -1,64 +1,85 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager : MonoBehaviourSingleton<PoolManager>
 {
-    [System.Serializable]
-    public class Pool
+    private Dictionary<Type, IPooleable> prefabs = new Dictionary<Type, IPooleable>();
+    private Dictionary<Type, Queue<IPooleable>> pool = new Dictionary<Type, Queue<IPooleable>>();
+
+
+    protected override void OnAwaken() { }
+
+
+    public T Get<T>() where T : MonoBehaviour, IPooleable
     {
-        public string tag;
-        public GameObject prefab;
-        public int size;
-    }
-
-    public static PoolManager instance;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-    public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> poolDictionary;
-
-    void Start()
-    {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
-
-        foreach (Pool pool in pools) 
+        bool hasKey = false;
+        foreach (var myObject in pool)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject> ();
-            for (int i = 0; i < pool.size; i++) 
+            if (myObject.Key == typeof(T))
             {
-                GameObject obj = Instantiate(pool.prefab, transform);
-                obj.SetActive (false);
-                objectPool.Enqueue (obj);
+                if (myObject.Value.Count > 0)
+                {
+                    return (T)myObject.Value.Dequeue();
+                }
+                else
+                {
+                    hasKey = true;
+                    break;
+                }
             }
-            poolDictionary.Add (pool.tag, objectPool);
         }
+
+        foreach (var prefab in prefabs)
+        {
+            if (prefab.Key == typeof(T))
+            {
+                if (!hasKey)
+                {
+                    pool.Add(typeof(T), new Queue<IPooleable>());
+                }
+                return GameObject.Instantiate((MonoBehaviour)prefab.Value, transform) as T;
+            }
+        }
+
+        return null;
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 pos, Quaternion rot)
+    public void ReturnToPool<T>(T pooledObject) where T : MonoBehaviour, IPooleable
     {
-
-        try
+        if (!pool.ContainsKey(typeof(T)))
         {
-            poolDictionary.ContainsKey(tag);
+            pooledObject.gameObject.SetActive(false);
+            pool.Add(typeof(T), new Queue<IPooleable>());
+            pool[typeof(T)].Enqueue(pooledObject);
         }
-        catch (System.Exception e)
+        else
         {
-            Debug.LogException(e, this);
-            return null;
+            pooledObject.gameObject.SetActive(false);
+            pool[typeof(T)].Enqueue(pooledObject);
         }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+    }
 
-        objectToSpawn.SetActive (true);
-        objectToSpawn.transform.position = pos;
-        objectToSpawn.transform.rotation = rot;
+    public void InitializePool<T>(T prefab, int minSize = 10) where T : MonoBehaviour, IPooleable
+    {
+        var type = typeof(T);
+        if (!prefabs.ContainsKey(type))
+        {
+            prefabs[type] = prefab;
+        }
 
-        poolDictionary[tag].Enqueue (objectToSpawn);
+        if (!pool.ContainsKey(type))
+        {
+            pool[type] = new Queue<IPooleable>();
+        }
 
-        return objectToSpawn;
+        for (int i = 0; i < minSize; i++)
+        {
+            T instance = Instantiate(prefab, transform);
+            instance.gameObject.SetActive(false);
+            pool[type].Enqueue(instance);
+        }
     }
 }

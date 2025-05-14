@@ -230,7 +230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2264411
 Transform:
   m_ObjectHideFlags: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pools:
   - tag: Bullets
-    prefab: {fileID: 3279201711955159285, guid: 0361579c976f4654f962513b860ca07a, type: 3}
+    prefab: {fileID: 8527177823731964978, guid: 0361579c976f4654f962513b860ca07a, type: 3}
     size: 5
   - tag: Enemie 1
     prefab: {fileID: 1836872554420024916, guid: f09ed5ed85125d2489ed9d684825b82d, type: 3}
@@ -4664,6 +4664,7 @@ Transform:
   - {fileID: 2264411}
   - {fileID: 1232708802}
   - {fileID: 1816586943}
+  - {fileID: 1480917854}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1092285997
@@ -6337,6 +6338,55 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.49999988, y: 3.9999998, z: 4.9999995}
   m_Center: {x: 2.2499998, y: 1.9999999, z: 0}
+--- !u!1 &1480917853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1480917854}
+  - component: {fileID: 1480917855}
+  m_Layer: 0
+  m_Name: Generic Pool Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1480917854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480917853}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1081224448}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1480917855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480917853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05500322a7c08094a9d770568ae97880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - prefab: {fileID: 8527177823731964978, guid: 0361579c976f4654f962513b860ca07a, type: 3}
+    size: 10
+    poolName: Bullet
+    pooledObjects: []
 --- !u!1001 &1519341823
 PrefabInstance:
   m_ObjectHideFlags: 0

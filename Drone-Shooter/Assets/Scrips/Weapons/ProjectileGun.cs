@@ -12,8 +12,10 @@ public class ProjectileGun : MonoBehaviour
     }
 
     public void Shoot()
-    {      
+    {
 
-        PoolManager.instance.SpawnFromPool("Bullets",transform.position, transform.rotation);
+        PhysicBullet bullet = PoolManager.Instance.Get<PhysicBullet>();
+        bullet.gameObject.SetActive(true);
+        bullet.CalculateTrajectory(bulletSpawnPoint.position, transform.forward, transform.rotation);
     }
 }
