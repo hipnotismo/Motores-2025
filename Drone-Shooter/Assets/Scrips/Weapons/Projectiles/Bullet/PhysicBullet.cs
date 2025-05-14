@@ -5,11 +5,14 @@ using UnityEngine;
 public class PhysicBullet : BaseBullet
 {
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private float lifeTime;
+    private float timeLeft = 0;
 
     private void FixedUpdate()
     {
         if (!isActivated) return;
         Fire();
+        Timer();
     }
 
     protected override void Fire()
@@ -17,6 +20,16 @@ public class PhysicBullet : BaseBullet
         rb.velocity = transform.up * speed;
     }
 
+    public virtual void Timer()
+    {
+        timeLeft += Time.deltaTime;
+        if (timeLeft > lifeTime) 
+        {
+            isActivated = false;
+            ReturnObjectToPool();
+        }
+
+    }
     private void OnCollisionEnter(Collision other)
     {
         ITakeDamage isHit = other.gameObject.GetComponent<ITakeDamage>();

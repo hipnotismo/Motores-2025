@@ -8,7 +8,6 @@ public class BaseBullet : MonoBehaviour, IPooleable
     public bool isActivated;
 
     public float speed;
-    public float lifeTime;
 
     protected virtual void Fire() { }
     public virtual void CalculateTrajectory(Vector3 initialPosition, Vector3 direction, Quaternion rotation) { }
